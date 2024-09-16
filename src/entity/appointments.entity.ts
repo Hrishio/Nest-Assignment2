@@ -5,21 +5,20 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  OneToMany,
+  OneToOne,
 } from 'typeorm';
 import { Patient } from './patient.entity';
-import { Employee } from './employee.entity';
 
 @Entity()
-export class Department {
+export class Appointments {
   @PrimaryGeneratedColumn()
-  deptId: number;
+  appId: number;
 
   @Column()
-  deptName: string;
+  AppDate: string;
 
   @Column()
-  location: string;
+  cause: string;
 
   @Column()
   empId: number;
@@ -42,9 +41,6 @@ export class Department {
   @Column({ nullable: false })
   updatedBy: number;
 
-  @OneToMany(() => Patient, (patient) => patient.deptID)
-  patients: Patient[];
-
-  @OneToMany(() => Employee, (employee) => employee.deptId)
-  employees: Employee[];
+  @OneToOne(() => Patient, (patient) => patient.appId)
+  patient: Patient[];
 }

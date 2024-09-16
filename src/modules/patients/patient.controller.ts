@@ -6,9 +6,11 @@ import {
   Post,
   Put,
   Delete,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PatientService } from './patient.services';
 import { CreatePatientDto, UpdatePatientDto } from '../../dtos/patient.dto';
+import { AuthService } from '../../guards/auth.service';
 
 @Controller('patients')
 export class PatientsController {
@@ -38,4 +40,23 @@ export class PatientsController {
   remove(@Param('id') id: number) {
     return this.PatientService.remove(id);
   }
+
+  // @Post('/login')
+  // async login(@Body() loginDto: { username: string; password: string }) {
+  //   // Implement your login logic
+  //   const user = await this.AuthService.validateUser(loginDto.username, loginDto.password);
+  //   if (user) {
+  //     const tokens = this.PatientService.generateToken({ userId: user.id });
+  //     return tokens;
+  //   } else {
+  //     throw new UnauthorizedException('Invalid credentials');
+  //   }
+  // }
+
+  // @Post('/refresh-token')
+  // async refreshToken(@Body() body: { refreshToken: string }) {
+  //   // Implement refresh token logic
+  //   const newTokens = await this.PatientService.refreshToken(body.refreshToken);
+  //   return newTokens;
+  // }
 }

@@ -5,7 +5,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
+  ManyToOne,
+  OneToOne,
 } from 'typeorm';
+import { Employee } from './employee.entity';
+import { Appointments } from './appointments.entity';
+import { Medicines } from './medicine.entity';
+import { Department } from './dept.entity';
 
 @Entity()
 export class Patient {
@@ -33,6 +40,12 @@ export class Patient {
   @Column()
   empId: number;
 
+  @Column()
+  deptID: number;
+
+  @Column()
+  appId: number;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
@@ -47,4 +60,16 @@ export class Patient {
 
   @Column({ nullable: false })
   updatedBy: number;
+
+  @OneToMany(() => Appointments, (appointment) => appointment.patientId)
+  appointments: Appointments[];
+
+  @OneToMany(() => Medicines, (medicine) => medicine.patientId)
+  medicines: Medicines[];
+
+  @OneToOne(() => Appointments, (appointment) => appointment.patientId)
+  patient: Appointments[];
+
+  @ManyToOne(() => Department, (department) => department.patientId)
+  department: Department;
 }

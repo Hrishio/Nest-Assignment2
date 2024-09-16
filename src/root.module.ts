@@ -5,6 +5,8 @@ import { Employee } from './entity/employee.entity';
 import { Department } from './entity/dept.entity';
 import { PatientModule } from './modules/patients/patient.module';
 import { EmpModule } from './modules/employees/emp.module';
+import { Medicines } from './entity/medicine.entity';
+import { Appointments } from './entity/appointments.entity';
 
 @Module({
   imports: [
@@ -15,7 +17,7 @@ import { EmpModule } from './modules/employees/emp.module';
       username: 'postgres',
       password: 'rootuser',
       database: 'nestDB',
-      entities: [Patient, Employee, Department],
+      entities: [Patient, Employee, Department, Medicines, Appointments],
       synchronize: true,
     }),
     PatientModule,

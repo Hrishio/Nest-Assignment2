@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Patient } from 'src/entity/patient.entity';
 import { GenericService } from 'src/generics/service.generic';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class PatientService extends GenericService<Patient> {
@@ -48,5 +49,27 @@ export class PatientService extends GenericService<Patient> {
     Object.assign(patient, patientData);
 
     return this.repository.save(patient);
+  }
+
+  generateToken(payload: object): {
+    accessToken: string;
+    refreshToken: string;
+  } {
+    const accessToken = jwt.sign(payload, this.secretKey, {
+      expiresIn: this.accessTokenExpiry,
+    });
+    const refreshToken = jwt.sign(payload, this.secretKey, {
+      expiresIn: this.refreshTokenExpiry,
+    });
+
+    return { accessToken, refreshToken };
+  }
+
+  verifyToken(token: string): object | null {
+    try {
+      return jwt.verify(token, this.secretKey) as object;
+    } catch (error) {
+      return null;
+    }
   }
 }

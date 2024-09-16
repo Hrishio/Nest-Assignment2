@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { DeepPartial, Repository } from 'typeorm';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class GenericService<T> {
+  public readonly secretKey = 'jsutlikethis';
+  public readonly accessTokenExpiry = '15m';
+  public readonly refreshTokenExpiry = '30m';
   constructor(protected readonly repository: Repository<T>) {}
 
   findAll(): Promise<T[]> {
@@ -24,5 +28,27 @@ export class GenericService<T> {
 
   async remove(id: number): Promise<void> {
     return await this.repository.delete(id).then(() => undefined);
+  }
+
+  generateToken(payload: object): {
+    accessToken: string;
+    refreshToken: string;
+  } {
+    const accessToken = jwt.sign(payload, this.secretKey, {
+      expiresIn: this.accessTokenExpiry,
+    });
+    const refreshToken = jwt.sign(payload, this.secretKey, {
+      expiresIn: this.refreshTokenExpiry,
+    });
+
+    return { accessToken, refreshToken };
+  }
+
+  verifyToken(token: string): object | null {
+    try {
+      return jwt.verify(token, this.secretKey) as object;
+    } catch (error) {
+      return null;
+    }
   }
 }

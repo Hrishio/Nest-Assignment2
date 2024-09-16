@@ -7,7 +7,7 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { PatientService } from '../user/patient.services';
+import { PatientService } from './patient.services';
 import { CreatePatientDto, UpdatePatientDto } from '../../dtos/patient.dto';
 
 @Controller('patients')
@@ -19,22 +19,22 @@ export class PatientsController {
     return this.PatientService.findAll();
   }
 
-  @Get(':id')
+  @Get('/:id')
   findOne(@Param('id') id: number) {
     return this.PatientService.findOne(id);
   }
 
-  @Post('new')
+  @Post('/new')
   create(@Body() createPatientDto: CreatePatientDto) {
     return this.PatientService.create(createPatientDto);
   }
 
-  //   @Put(':id')
-  //   update(@Param('id') id: number, @Body() updatePatientDto: UpdatePatientDto) {
-  //     return this.PatientService.update(id, updatePatientDto);
-  //   }
+  @Put('/:id')
+  update(@Param('id') id: number, @Body() updatePatientDto: UpdatePatientDto) {
+    return this.PatientService.update(id, updatePatientDto);
+  }
 
-  @Delete(':id')
+  @Delete('/:id')
   remove(@Param('id') id: number) {
     return this.PatientService.remove(id);
   }

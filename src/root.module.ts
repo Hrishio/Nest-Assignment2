@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Patient } from './entity/patient.entity';
 import { Employee } from './entity/employee.entity';
 import { Department } from './entity/dept.entity';
+import { PatientModule } from './modules/patients/patient.module';
+import { EmpModule } from './modules/employees/emp.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { Department } from './entity/dept.entity';
       entities: [Patient, Employee, Department],
       synchronize: true,
     }),
+    PatientModule,
+    EmpModule,
   ],
 })
 export class RootModule {}

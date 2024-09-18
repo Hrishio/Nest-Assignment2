@@ -15,7 +15,7 @@ import { Appointments } from './entity/appointments.entity';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: 'rootuser',
+      password: 'hrishio',
       database: 'nestDB',
       entities: [Patient, Employee, Department, Medicines, Appointments],
       synchronize: true,

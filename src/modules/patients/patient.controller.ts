@@ -9,8 +9,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { PatientService } from './patient.services';
-import { CreatePatientDto, UpdatePatientDto } from '../../dtos/patient.dto';
-import { AuthService } from '../../guards/auth.service';
+import { CreatePatientDto, updatePatientDto } from '../../dtos/patient.dto';
+// import { AuthService } from '../../interceptors'
 
 @Controller('patients')
 export class PatientsController {
@@ -32,7 +32,7 @@ export class PatientsController {
   }
 
   @Put('/:id')
-  update(@Param('id') id: number, @Body() updatePatientDto: UpdatePatientDto) {
+  update(@Param('id') id: number, @Body() updatePatientDto: updatePatientDto) {
     return this.PatientService.update(id, updatePatientDto);
   }
 

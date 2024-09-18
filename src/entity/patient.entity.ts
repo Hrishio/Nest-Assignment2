@@ -40,7 +40,7 @@ export class Patient {
   @Column()
   empId: number;
 
-  @Column()
+  @Column({nullable:true})
   deptID: number;
 
   @Column()

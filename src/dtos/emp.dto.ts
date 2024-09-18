@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsEmail, IsNumber, IsString } from 'class-validator';
 
-export class CreatePatientDto {
+export class CreateEmpDto {
   @IsNotEmpty()
   @IsString()
   firstName: string;
@@ -48,7 +48,7 @@ export class CreatePatientDto {
   
 }
 
-export class updatePatientDto{
+export class UpdateEmpDto{
     firstName?: string;
     lastName?: string;
     email?: string;

@@ -15,7 +15,7 @@ export class Appointments {
   appId: number;
 
   @Column()
-  AppDate: string;
+  appDate: string;
 
   @Column()
   cause: string;

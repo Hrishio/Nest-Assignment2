@@ -1,27 +1,24 @@
+// src/root.module.ts
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Patient } from './entity/patient.entity';
-import { Employee } from './entity/employee.entity';
-import { Department } from './entity/dept.entity';
+import { typeOrmConfig } from './config/database.config'; // Import the config factory function
 import { PatientModule } from './modules/patients/patient.module';
 import { EmpModule } from './modules/employees/emp.module';
-import { Medicines } from './entity/medicine.entity';
-import { Appointments } from './entity/appointments.entity';
+import { DeptModule } from './modules/departments/dept.module';
+import { MedModule } from './modules/medicines/med.module';
+import { AppModule } from './modules/appointments/app.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'hrishio',
-      database: 'nestDB',
-      entities: [Patient, Employee, Department, Medicines, Appointments],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      useFactory: typeOrmConfig,
     }),
     PatientModule,
     EmpModule,
+    DeptModule,
+    MedModule,
+    AppModule,
   ],
 })
 export class RootModule {}

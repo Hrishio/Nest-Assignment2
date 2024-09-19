@@ -1,8 +1,6 @@
-// src/config/database.config.ts
-
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { join } from 'path';
 
-// Factory function to return TypeOrmModuleOptions
 export const typeOrmConfig = (): TypeOrmModuleOptions => ({
   type: 'postgres',
   host: 'localhost',
@@ -10,7 +8,10 @@ export const typeOrmConfig = (): TypeOrmModuleOptions => ({
   username: 'postgres',
   password: 'hrishio',
   database: 'nestDB',
-  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  migrations: [__dirname + '/../migrations/*{.ts,.js}'],
-  synchronize: false, 
+
+  // Dynamically resolve entities and migrations path
+  entities: [join(__dirname, '/../**/*.entity.{ts,js}')],
+  migrations: [join(__dirname, '/../migrations/*.{ts,js}')],
+
+  synchronize: false, // Set to false in production
 });

@@ -1,25 +1,27 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
-    "sourceMap": true,
-    "outDir": "./dist",
+    "module": "commonjs",                     // Use CommonJS module system
+    "target": "ES2021",                       // Target ECMAScript 2021
+    "outDir": "./dist",                       // Output directory for compiled files
     "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-    // "compilerOptions": {
-    //   "emitDecoratorMetadata": true,
-    //   "experimentalDecorators": true
-    // }
-  }
+    "strictPropertyInitialization": false,                         // Base directory for non-relative module names
+    "paths": {                               // Path alias configuration
+      "@src/*": ["src/*"]
+    },
+    "emitDecoratorMetadata": true,           // Enable metadata reflection for decorators
+    "experimentalDecorators": true,          // Enable experimental decorators
+    "sourceMap": true,                       // Generate source maps
+    "declaration": true,                     // Generate declaration files
+    "removeComments": true,                  // Remove comments from output files
+    "allowSyntheticDefaultImports": true,    // Allow synthetic default imports
+    "skipLibCheck": true,                    // Skip type checking of declaration files
+    "strict": true,                          // Enable all strict type-checking options
+    "incremental": true,                     // Enable incremental compilation
+    "strictNullChecks": true,                // Enable strict null checks
+    "noImplicitAny": true,                   // Raise error on implicit 'any' type
+    "strictBindCallApply": true,             // Enable strict checking of bind, call, and apply methods
+    "forceConsistentCasingInFileNames": true // Ensure consistent casing in file names
+  },
+  "include": ["src/**/*.ts"],                // Include all TypeScript files in src directory
+  "exclude": ["node_modules", "dist"]        // Exclude node_modules and dist directories
 }

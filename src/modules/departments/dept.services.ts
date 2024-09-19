@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { Department } from 'src/entity/dept.entity';
 import { GenericService } from 'src/generics/service.generic';
 import * as jwt from 'jsonwebtoken';
@@ -30,26 +30,26 @@ export class DeptService extends GenericService<Department> {
   }
 
   // Create a new patient
-  async create(deptData: Partial<Department>): Promise<Department | null> {
-    const newDept = this.repository.create(deptData);
-    return this.repository.save(newDept);
+// Example for AppService
+
+async create(deptData: DeepPartial<Department>): Promise<Department> {
+  const newDept = this.repository.create(deptData);
+  return this.repository.save(newDept);
+}
+
+async update(
+  id: number,
+  deptData: DeepPartial<Department>,
+): Promise<Department> {
+  const dept = await this.repository.preload({ deptId: id, ...deptData });
+
+  if (!dept) {
+    throw new Error(`Entity with id ${id} not found`);
   }
 
-  // Update an existing patient
-  async update(
-    id: number,
-    deptData: Partial<Department>,
-  ): Promise<Department | null> {
-    const dept = await this.repository.findOneBy({ deptId: id });
+  return this.repository.save(dept);
+}
 
-    if (!dept) {
-      return null;
-    }
-
-    Object.assign(dept, deptData);
-
-    return this.repository.save(dept);
-  }
 
   generateToken(payload: object): {
     accessToken: string;

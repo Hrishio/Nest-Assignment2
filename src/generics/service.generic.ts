@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { DeepPartial, Repository } from 'typeorm';
+import { DeepPartial, ObjectLiteral, Repository } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 
 @Injectable()
-export class GenericService<T> {
+export class GenericService<T extends ObjectLiteral> {
   public readonly secretKey = 'jsutlikethis';
   public readonly accessTokenExpiry = '15m';
   public readonly refreshTokenExpiry = '30m';

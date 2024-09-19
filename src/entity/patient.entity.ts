@@ -40,7 +40,7 @@ export class Patient {
   @Column()
   empId: number;
 
-  @Column({nullable:true})
+  @Column({ nullable: true })
   deptID: number;
 
   @Column()
@@ -53,23 +53,11 @@ export class Patient {
   updatedAt: Date;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
-  deletedAt: Date;
+  deletedAt?: Date; // Changed to optional
 
-  @Column({ nullable: false })
+  @Column()
   createdBy: number;
 
-  @Column({ nullable: false })
+  @Column()
   updatedBy: number;
-
-  @OneToMany(() => Appointments, (appointment) => appointment.patientId)
-  appointments: Appointments[];
-
-  @OneToMany(() => Medicines, (medicine) => medicine.patientId)
-  medicines: Medicines[];
-
-  @OneToOne(() => Appointments, (appointment) => appointment.patientId)
-  patient: Appointments[];
-
-  @ManyToOne(() => Department, (department) => department.patientId)
-  department: Department;
 }

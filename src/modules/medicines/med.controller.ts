@@ -23,6 +23,17 @@ import { CreateMedDto, UpdateMedDto } from 'src/dtos/med.dto';
     findOne(@Param('id') id: number) {
       return this.medService.findOne(id);
     }
+
+
+    @Get('patient/:id')
+    async findPatientById(@Param('id') patientId: number) {
+      return await this.medService.findPatientById(patientId);
+    }
+
+    @Get('employee/:id')
+    async findByEmployeeId(@Param('id') empId: number) {
+      return await this.medService.findByEmpId(empId);
+    }
   
     @Post('/new')
     create(@Body() createMedDto: CreateMedDto) {

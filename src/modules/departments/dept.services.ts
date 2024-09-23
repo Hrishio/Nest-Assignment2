@@ -4,6 +4,7 @@ import { DeepPartial, Repository } from 'typeorm';
 import { Department } from 'src/entity/dept.entity';
 import { GenericService } from 'src/generics/service.generic';
 import * as jwt from 'jsonwebtoken';
+import { Employee } from '@src/entity/employee.entity';
 
 @Injectable()
 export class DeptService extends GenericService<Department> {
@@ -22,6 +23,13 @@ export class DeptService extends GenericService<Department> {
   // Find one patient by ID
   findOne(id: number): Promise<Department | null> {
     return this.repository.findOneBy({ deptId: id });
+  }
+
+  async findByEmpId(empId: number): Promise<Department[]> {
+    return await this.deptRepository.find({ where: { empId } });
+  }
+  async findPatientById(patientId: number): Promise<Department[]> {
+    return await this.deptRepository.find({ where: { patientId } });
   }
 
   // Remove a patient by ID

@@ -7,6 +7,7 @@ import {
   DeleteDateColumn,
   OneToMany,
   ManyToOne,
+  JoinColumn,  // Import this to define the foreign key column
 } from 'typeorm';
 import { Appointments } from './appointments.entity';
 import { Medicines } from './medicine.entity';
@@ -38,6 +39,7 @@ export class Employee {
   @Column()
   patientId: number;
 
+  // Define deptId as a foreign key that references the Department entity
   @Column()
   deptId: number;
 
@@ -56,12 +58,16 @@ export class Employee {
   @Column({ nullable: false })
   updatedBy: number;
 
+  // One-to-many relation between Employee and Appointments
   @OneToMany(() => Appointments, (appointment) => appointment.empId)
   appointments: Appointments[];
 
+  // One-to-many relation between Employee and Medicines
   @OneToMany(() => Medicines, (medicine) => medicine.empId)
   medicines: Medicines[];
 
-  @ManyToOne(() => Department, (department) => department.empId)
+  // Many-to-one relation between Employee and Department, using @JoinColumn to specify the foreign key
+  @ManyToOne(() => Department, (department) => department.employees)
+  @JoinColumn({ name: 'deptId' })  // Explicitly define the foreign key column
   department: Department;
 }

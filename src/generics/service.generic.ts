@@ -52,7 +52,7 @@
 //     }
 //   }
 // }
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DeepPartial, ObjectLiteral, Repository, QueryRunner } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 
@@ -69,7 +69,12 @@ export class GenericService<T extends ObjectLiteral> {
    * @returns Promise<T[]>
    */
   findAll(): Promise<T[]> {
-    return this.repository.find();
+    try {
+      
+      return this.repository.find();
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 
   /**
@@ -78,7 +83,11 @@ export class GenericService<T extends ObjectLiteral> {
    * @returns Promise<T | null>
    */
   findOne(id: number): Promise<T | null> {
-    return this.repository.findOne({ where: { id } as any });
+    try {
+      return this.repository.findOne({ where: { id } as any });
+    } catch (error) {
+      throw new NotFoundException('Not Found')
+    }
   }
 
   /**

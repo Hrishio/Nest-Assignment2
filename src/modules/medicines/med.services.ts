@@ -24,6 +24,14 @@ export class MedService extends GenericService<Medicines> {
     return this.repository.findOneBy({ medId: id });
   }
 
+  async findByEmpId(empId: number): Promise<Medicines[]> {
+    return await this.medRepository.find({ where: { empId } });
+  }
+
+  async findPatientById(patientId: number): Promise<Medicines[]> {
+    return await this.medRepository.find({ where: { patientId } });
+  }
+
   // Remove a patient by ID
   async remove(id: number): Promise<void> {
     await this.repository.delete(id);

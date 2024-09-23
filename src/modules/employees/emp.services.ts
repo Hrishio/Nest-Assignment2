@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, Repository } from 'typeorm';
-import { Patient } from 'src/entity/patient.entity';
 import { GenericService } from 'src/generics/service.generic';
 import { Employee } from 'src/entity/employee.entity';
 
@@ -22,6 +21,10 @@ export class EmpService extends GenericService<Employee> {
   // Find one patient by ID
   findOne(id: number): Promise<Employee | null> {
     return this.repository.findOneBy({ empId: id });
+  }
+
+  async findPatientById(patientId: number): Promise<Employee[]> {
+    return await this.empRepository.find({ where: { patientId } });
   }
 
   // Remove a patient by ID

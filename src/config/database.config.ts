@@ -7,7 +7,7 @@ export const typeOrmConfig = (): TypeOrmModuleOptions => ({
   port: 5432,
   username: 'postgres',
   password: 'hrishio',
-  database: 'nestDB',
+  database: 'nestDemo',
 
   // Dynamically resolve entities and migrations path
   entities: [join(__dirname, '/../**/*.entity.{ts,js}')],

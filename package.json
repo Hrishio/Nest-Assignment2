@@ -29,6 +29,8 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^10.0.2",
     "class-validator": "^0.14.1",
+    "cors": "^2.8.5",
+    "jwt-payload": "^1.0.7",
     "pg": "^8.13.0",
     "postgres": "^3.4.4",
     "postgresql": "^0.0.1",

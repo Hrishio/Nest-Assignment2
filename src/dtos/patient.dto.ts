@@ -58,6 +58,6 @@ export class updatePatientDto{
     empId?:number;
     deptId?:number;
     appId?:number;
-    createdBy: number;
-    updatedBy: number;
+    createdBy?: number;
+    updatedBy?: number;
   }

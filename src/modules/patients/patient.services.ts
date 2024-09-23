@@ -89,6 +89,7 @@ export class PatientService extends GenericService<Patient> {
     super(patientRepository);
   }
 
+
   /**
    * Find all patients.
    * @returns Promise<Patient[]>
@@ -131,14 +132,25 @@ export class PatientService extends GenericService<Patient> {
    * @param patientData - Data to update.
    * @returns Promise<Patient>
    */
-  async update(id: number, patientData: DeepPartial<Patient>): Promise<Patient> {
-    const patient = await this.repository.preload({ patientId: id, ...patientData });
+  async update(patientId: number, patientData: DeepPartial<Patient>): Promise<Patient> {
+    const patient = await this.repository.findOne({where:{patientId}})
 
+    
     if (!patient) {
-      throw new Error(`Patient with ID ${id} not found`);
+      throw new Error(`Patient with ID ${patientId} not found`);
     }
 
+    Object.assign(patient, patientData)
+
     return this.repository.save(patient);
+  }
+
+  async findByEmpId(empId: number): Promise<Patient[]> {
+    return await this.patientRepository.find({ where: { empId } });
+  }
+
+  async findAppById(appId: number): Promise<Patient[]> {
+    return await this.patientRepository.find({ where: { appId } });
   }
 
   /**

@@ -24,6 +24,17 @@ import { CreateDeptDto, UpdateDeptDto } from 'src/dtos/dept.dto';
     findOne(@Param('id') id: number) {
       return this.deptService.findOne(id);
     }
+
+
+    @Get('employee/:id')
+    async findByEmployeeId(@Param('id') empId: number) {
+      return await this.deptService.findByEmpId(empId);
+    }
+
+    @Get('patient/:id')
+    async findPatientById(@Param('id') patientId: number) {
+      return await this.deptService.findPatientById(patientId);
+    }
   
     @Post('/new')
     create(@Body() createDeptDto: CreateDeptDto) {

@@ -5,14 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  OneToMany,
-  ManyToOne,
-  OneToOne,
 } from 'typeorm';
-import { Employee } from './employee.entity';
-import { Appointments } from './appointments.entity';
-import { Medicines } from './medicine.entity';
-import { Department } from './dept.entity';
 
 @Entity()
 export class Patient {

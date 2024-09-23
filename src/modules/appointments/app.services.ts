@@ -21,7 +21,15 @@ export class AppService extends GenericService<Appointments> {
 
   // Find one patient by ID
   findOne(id: number): Promise<Appointments | null> {
-    return this.repository.findOneBy({ appId: id });
+    return this.repository.findOneBy({ patientId: id });
+  }
+
+  async findPatientById(patientId: number): Promise<Appointments[]> {
+    return await this.appRepository.find({ where: { patientId } });
+  }
+
+  async findEmpById(empId: number): Promise<Appointments[]> {
+    return await this.appRepository.find({ where: { empId } });
   }
 
   // Remove a patient by ID
@@ -32,7 +40,15 @@ export class AppService extends GenericService<Appointments> {
   // Create a new patient
   async create(appData: DeepPartial<Appointments>): Promise<Appointments> {
     const newApp = this.repository.create(appData);
-    return this.repository.save(newApp);
+    console.log("appData", newApp)
+
+    try {
+      
+      return this.repository.save(newApp);
+    } catch (error) {
+      console.error("Error saving appointment:", error);
+      throw new Error("Could not save appointment");
+    }
   }
   
 
@@ -44,7 +60,7 @@ export class AppService extends GenericService<Appointments> {
     const app = await this.repository.preload({ appId: id, ...appData });
   
     if (!app) {
-      throw new Error(`Entity with id ${id} not found`); // or handle this case according to your requirements
+      throw new Error(`Entity with id ${id} not found`);
     }
   
     return this.repository.save(app);

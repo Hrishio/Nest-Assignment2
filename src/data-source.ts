@@ -9,6 +9,6 @@ export const AppDataSource = new DataSource({
   password: 'hrishio',
   database: 'nestDemo',
   "entities": ["src/**/*.entity.ts"],
-  migrations: ['src/migration/*.ts'],
+  migrations: ['src/migrations/*.ts'],
   synchronize: true,
 });

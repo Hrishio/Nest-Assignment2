@@ -12,30 +12,35 @@ import { CreateEmpDto, UpdateEmpDto } from 'src/dtos/emp.dto';
 
 @Controller('employees')
 export class EmpController {
-  constructor(private readonly PatientService: EmpService) {}
+  constructor(private readonly empService: EmpService) {}
 
   @Get()
   findAll() {
-    return this.PatientService.findAll();
+    return this.empService.findAll();
   }
 
   @Get('/:id')
   findOne(@Param('id') id: number) {
-    return this.PatientService.findOne(id);
+    return this.empService.findOne(id);
+  }
+
+  @Get('patient/:id')
+  async findPatientById(@Param('id') patientId: number) {
+    return await this.empService.findPatientById(patientId);
   }
 
   @Post('/new')
   create(@Body() createEmpDto: CreateEmpDto) {
-    return this.PatientService.create(createEmpDto);
+    return this.empService.create(createEmpDto);
   }
 
   @Put('/:id')
   update(@Param('id') id: number, @Body() updateEmpDto: UpdateEmpDto) {
-    return this.PatientService.update(id, updateEmpDto);
+    return this.empService.update(id, updateEmpDto);
   }
 
   @Delete('/:id')
   remove(@Param('id') id: number) {
-    return this.PatientService.remove(id);
+    return this.empService.remove(id);
   }
 }

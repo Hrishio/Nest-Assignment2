@@ -86,7 +86,6 @@ export class PatientsController {
     try {
       return await this.patientService.remove(id);
     } catch (error) {
-      // Handle error, potentially log or reformat it
       throw error;
     }
   }

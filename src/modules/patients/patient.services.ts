@@ -84,12 +84,15 @@ import {
 import { Patient } from 'src/entity/patient.entity';
 import { GenericService } from 'src/generics/service.generic';
 import * as jwt from 'jsonwebtoken';
+import { TransactionService } from '@src/transactions/transaction.service';
+import { CreatePatientDto, updatePatientDto } from '@src/dtos/patient.dto';
 
 @Injectable()
 export class PatientService extends GenericService<Patient> {
   constructor(
     @InjectRepository(Patient)
     private readonly patientRepository: Repository<Patient>,
+    private readonly transactionService: TransactionService,
   ) {
     super(patientRepository);
   }
@@ -268,9 +271,17 @@ async findAll(
    * @param patientData - Data for the new patient.
    * @returns Promise<Patient>
    */
-  async create(patientData: DeepPartial<Patient>): Promise<Patient> {
-    const newPatient = this.repository.create(patientData);
-    return this.repository.save(newPatient);
+  // async create(patientData: DeepPartial<Patient>): Promise<Patient> {
+  //   const newPatient = this.repository.create(patientData);
+  //   return this.repository.save(newPatient);
+  // }
+
+  // async create(createDto: DeepPartial<Patient>): Promise<Patient> {
+  async create(createDto: CreatePatientDto): Promise<Patient> {
+    return await this.transactionService.executeInTransaction(this.patientRepository.manager, async () => {
+      const newPatient = this.patientRepository.create(createDto); // Use patientRepository instead of repository
+      return await this.patientRepository.save(newPatient);
+    });
   }
 
   /**
@@ -281,7 +292,8 @@ async findAll(
    */
   async update(
     patientId: number,
-    patientData: DeepPartial<Patient>,
+    // patientData: DeepPartial<Patient>,
+    patientData: updatePatientDto,
   ): Promise<Patient> {
     const patient = await this.repository.findOne({ where: { patientId } });
 

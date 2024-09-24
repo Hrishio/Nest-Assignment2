@@ -4,6 +4,7 @@ import { DeepPartial, Repository } from 'typeorm';
 import { Appointments } from 'src/entity/appointments.entity';
 import { GenericService } from 'src/generics/service.generic';
 import * as jwt from 'jsonwebtoken';
+import { CreateAppDto, UpdateAppDto } from '@src/dtos/app.dto';
 
 @Injectable()
 export class AppService extends GenericService<Appointments> {
@@ -38,7 +39,8 @@ export class AppService extends GenericService<Appointments> {
   }
 
   // Create a new patient
-  async create(appData: DeepPartial<Appointments>): Promise<Appointments> {
+  // async create(appData: DeepPartial<Appointments>): Promise<Appointments> {
+  async create(appData: CreateAppDto): Promise<Appointments> {
     const newApp = this.repository.create(appData);
     console.log("appData", newApp)
 
@@ -55,7 +57,8 @@ export class AppService extends GenericService<Appointments> {
   // Update an existing patient
   async update(
     id: number,
-    appData: DeepPartial<Appointments>,
+    // appData: DeepPartial<Appointments>,
+    appData: UpdateAppDto,
   ): Promise<Appointments> {
     const app = await this.repository.preload({ appId: id, ...appData });
   

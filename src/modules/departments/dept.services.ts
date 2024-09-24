@@ -5,6 +5,7 @@ import { Department } from 'src/entity/dept.entity';
 import { GenericService } from 'src/generics/service.generic';
 import * as jwt from 'jsonwebtoken';
 import { Employee } from '@src/entity/employee.entity';
+import { CreateDeptDto, UpdateDeptDto } from '@src/dtos/dept.dto';
 
 @Injectable()
 export class DeptService extends GenericService<Department> {
@@ -40,14 +41,16 @@ export class DeptService extends GenericService<Department> {
   // Create a new patient
 // Example for AppService
 
-async create(deptData: DeepPartial<Department>): Promise<Department> {
+// async create(deptData: DeepPartial<Department>): Promise<Department> {
+async create(deptData: CreateDeptDto): Promise<Department> {
   const newDept = this.repository.create(deptData);
   return this.repository.save(newDept);
 }
 
 async update(
   id: number,
-  deptData: DeepPartial<Department>,
+  // deptData: DeepPartial<Department>,
+  deptData: UpdateDeptDto,
 ): Promise<Department> {
   const dept = await this.repository.preload({ deptId: id, ...deptData });
 

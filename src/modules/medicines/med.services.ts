@@ -4,6 +4,7 @@ import { DeepPartial, Repository } from 'typeorm';
 import { Medicines } from 'src/entity/medicine.entity';
 import { GenericService } from 'src/generics/service.generic';
 import * as jwt from 'jsonwebtoken';
+import { CreateMedDto, UpdateMedDto } from '@src/dtos/med.dto';
 
 @Injectable()
 export class MedService extends GenericService<Medicines> {
@@ -40,14 +41,16 @@ export class MedService extends GenericService<Medicines> {
   // Create a new patient
  // Example for AppService
 
-async create(medData: DeepPartial<Medicines>): Promise<Medicines> {
+// async create(medData: DeepPartial<Medicines>): Promise<Medicines> {
+async create(medData: CreateMedDto): Promise<Medicines> {
   const newMed = this.repository.create(medData);
   return this.repository.save(newMed);
 }
 
 async update(
   id: number,
-  medData: DeepPartial<Medicines>,
+  // medData: DeepPartial<Medicines>,
+  medData: UpdateMedDto,
 ): Promise<Medicines> {
   const med = await this.repository.preload({ medId: id, ...medData });
 

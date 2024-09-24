@@ -6,18 +6,41 @@ import {
   Post,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { PatientService } from './patient.services';
 import { CreatePatientDto, updatePatientDto } from '../../dtos/patient.dto';
+import { Patient } from '@src/entity/patient.entity';
 // import { AuthService } from '../../interceptors'
 
 @Controller('patients')
 export class PatientsController {
   constructor(private readonly patientService: PatientService) {}
 
-  @Get()
-  findAll() {
-    return this.patientService.findAll();
+  @Get('search')
+  async getPatients(
+    @Query('page') page: number = 1,                          // Default page 1
+    @Query('limit') limit: number = 10,                       // Default limit 10
+    @Query('search') search?: string,                          // Optional search query
+    @Query('sort') sort?: 'name' | 'age' | 'email',          // Adjust as needed
+    @Query('order') order: 'ASC' | 'DESC' = 'ASC'
+  ): Promise<{}> { // Log the search value for debugging
+
+    // Call the service's findAll method with pagination, search, and sort options
+    const result = await this.patientService.findAll(page, limit, search, sort, order);
+
+    // Return the structured response
+    return result; // This should contain both data and total
+  }
+
+  @Get("/") // Default route
+  async getAllPatients(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10
+  ): Promise<any> {
+    // Call the service's findAll method without search
+    const result = await this.patientService.findAll(page, limit);
+    return result; // This should contain both data and total
   }
 
   @Get('/:id')

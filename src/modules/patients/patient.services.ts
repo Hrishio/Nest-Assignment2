@@ -50,7 +50,6 @@
 //   return this.repository.save(patient);
 // }
 
-
 //   generateToken(payload: object): {
 //     accessToken: string;
 //     refreshToken: string;
@@ -75,7 +74,13 @@
 // }
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import {
+  DeepPartial,
+  FindManyOptions,
+  FindOptionsOrder,
+  Like,
+  Repository,
+} from 'typeorm';
 import { Patient } from 'src/entity/patient.entity';
 import { GenericService } from 'src/generics/service.generic';
 import * as jwt from 'jsonwebtoken';
@@ -89,14 +94,156 @@ export class PatientService extends GenericService<Patient> {
     super(patientRepository);
   }
 
-
   /**
    * Find all patients.
    * @returns Promise<Patient[]>
    */
-  findAll(): Promise<Patient[]> {
-    return this.repository.find();
+  // findAll(
+  //   page: number,
+  //   limit: number,
+  //   sort?: string,
+  //   order?: 'ASC' | 'DESC',
+  //   search?: string,
+  // ): Promise<Patient[]>;
+
+  // findAll(
+  //   page: number,
+  //   limit: number,
+  //   search?: string,
+  //   sort?: string,
+  //   order?: 'ASC' | 'DESC',
+  // ): Promise<{
+  //   data: Patient[];
+  //   currentPage: number;
+  //   nextPage: number | null;
+  //   prevPage: number | null;
+  //   totalItems: number;
+  //   totalPages: number;
+  // }>;
+  // Implementation
+  // async findAll(
+  //   page: number,
+  //   limit: number,
+  //   search?: string,
+  //   sort?: string,
+  //   order: 'ASC' | 'DESC' = 'ASC'
+  // ): Promise<any> {  // Use any to allow flexible return types
+  //   const queryOptions: FindManyOptions<Patient> = {
+  //     skip: (page - 1) * limit,
+  //     take: limit,
+  //     order: {} as FindOptionsOrder<Patient>,
+  //     where: {},
+  //   };
+
+  //   if (sort) {
+  //     (queryOptions.order as any)[sort] = order;
+  //   }
+
+  //   if (search) {
+  //     queryOptions.where = {
+  //       firstName: Like(`%${search}%`) as any,
+  //     };
+  //   }
+
+  //   const [data, total] = await this.repository.findAndCount(queryOptions);
+  //   const totalPages = Math.ceil(total / limit);
+  //   const nextPage = page < totalPages ? page + 1 : null;
+  //   const prevPage = page > 1 ? page - 1 : null;
+
+  //   return {
+  //     data,
+  //     currentPage: page,
+  //     nextPage,
+  //     prevPage,
+  //     totalItems: total,
+  //     totalPages,
+  //   };
+  // }// Assuming this is your entity
+
+  // Define the overloads
+findAll(
+  page: number,
+  limit: number,
+  sort?: string,
+  order?: 'ASC' | 'DESC',
+  search?: string,
+): Promise<Patient[]>;
+
+findAll(
+  page: number,
+  limit: number,
+  search?: string,
+  sort?: string,
+  order?: 'ASC' | 'DESC',
+): Promise<{
+  data: Patient[];
+  currentPage: number;
+  nextPage: number | null;
+  prevPage: number | null;
+  totalItems: number;
+  totalPages: number;
+}>;
+
+// Implementation
+async findAll(
+  page: number,
+  limit: number,
+  searchOrSort?: keyof Patient,
+  sortOrOrder?: string | 'ASC' | 'DESC',
+  order?: 'ASC' | 'DESC',
+): Promise<any> {
+  const queryOptions: FindManyOptions<Patient> = {
+    skip: (page - 1) * limit, // Pagination offset
+    take: limit, // Pagination limit
+    order: {}, // Empty initially
+    where: {}, // Empty initially, filled based on search
+  };
+
+  // Determine search and sort/order
+  let search: string | undefined;
+  let sort: keyof Patient | undefined
+  let orderBy: 'ASC' | 'DESC' | undefined;
+
+  if (typeof sortOrOrder === 'string' && (sortOrOrder === 'ASC' || sortOrOrder === 'DESC')) {
+    orderBy = sortOrOrder;
+    sort = searchOrSort; // Assign the searchOrSort to sort if it's a string
+  } else {
+    search = searchOrSort; // Assign to search if it's not an order
+    sort = sortOrOrder as keyof Patient; // Ensure it's treated as a string
   }
+
+  // If sort is provided, add it to the order options
+  if (sort) {
+    (queryOptions.order as FindOptionsOrder<Patient>)[sort] = orderBy || 'ASC'; // Default to ASC if no order is provided
+  }
+
+  // If search is provided, filter by firstName (or adjust to the correct field)
+  if (search) {
+    queryOptions.where = {
+      firstName: Like(`%${search}%`), // Modify 'firstName' if field is named differently in entity
+    };
+  }
+
+  try {
+    const [data, total] = await this.repository.findAndCount(queryOptions); // Fetch data and total count
+    const totalPages = Math.ceil(total / limit); // Calculate total pages
+    const nextPage = page < totalPages ? page + 1 : null; // Calculate next page
+    const prevPage = page > 1 ? page - 1 : null; // Calculate previous page
+
+    return {
+      data,
+      currentPage: page,
+      nextPage,
+      prevPage,
+      totalItems: total,
+      totalPages,
+    };
+  } catch (error) {
+    throw new Error(`Error fetching patients: ${error}`); // Error handling
+  }
+}
+
+
 
   /**
    * Find one patient by ID.
@@ -132,15 +279,17 @@ export class PatientService extends GenericService<Patient> {
    * @param patientData - Data to update.
    * @returns Promise<Patient>
    */
-  async update(patientId: number, patientData: DeepPartial<Patient>): Promise<Patient> {
-    const patient = await this.repository.findOne({where:{patientId}})
+  async update(
+    patientId: number,
+    patientData: DeepPartial<Patient>,
+  ): Promise<Patient> {
+    const patient = await this.repository.findOne({ where: { patientId } });
 
-    
     if (!patient) {
       throw new Error(`Patient with ID ${patientId} not found`);
     }
 
-    Object.assign(patient, patientData)
+    Object.assign(patient, patientData);
 
     return this.repository.save(patient);
   }

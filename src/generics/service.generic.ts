@@ -53,7 +53,7 @@
 //   }
 // }
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DeepPartial, ObjectLiteral, Repository, QueryRunner } from 'typeorm';
+import { DeepPartial, ObjectLiteral, Repository, QueryRunner, Like, FindManyOptions, FindOptionsOrder } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 
 @Injectable()
@@ -68,18 +68,38 @@ export class GenericService<T extends ObjectLiteral> {
    * Finds all entities.
    * @returns Promise<T[]>
    */
-  findAll(): Promise<T[]> {
-    try {
-      
-      return this.repository.find();
-    } catch (error) {
-      throw new NotFoundException();
+  async findAll(
+    page: number,
+    limit: number,
+    sort?: string,
+    order: 'ASC' | 'DESC' = 'ASC',
+    search?: string,
+  ): Promise<T[]> {
+    const queryOptions: FindManyOptions<T> = {
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {} as FindOptionsOrder<T>, // Correct initialization with type assertion
+      where: {},
+    };
+  
+    // Add sorting if a sort field is provided
+    if (sort) {
+      (queryOptions.order as any)[sort] = order; // Use 'any' to bypass the type restriction
     }
+  
+    // Add searching
+    if (search) {
+      queryOptions.where = {
+        name: Like(`%${search}%`) as any, // Ensure the type matches the entity's property type
+      };
+    }
+  
+    return this.repository.find(queryOptions);
   }
 
   /**
    * Finds a single entity by its ID.
-   * @param id - The ID of the entity.
+   * @param id - The ID of the entity.ASC',
    * @returns Promise<T | null>
    */
   findOne(id: number): Promise<T | null> {

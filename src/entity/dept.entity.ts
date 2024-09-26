@@ -13,7 +13,7 @@ import { Employee } from './employee.entity';
 @Entity()
 export class Department {
   @PrimaryGeneratedColumn()
-  deptId: number;
+  deptID: number;
 
   @Column()
   deptName: string;
@@ -44,7 +44,4 @@ export class Department {
 
   @OneToMany(() => Patient, (patient) => patient.deptID)
   patients: Patient[];
-
-  @OneToMany(() => Employee, (employee) => employee.deptId)
-  employees: Employee[];
 }

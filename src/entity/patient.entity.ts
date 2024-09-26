@@ -21,6 +21,9 @@ export class Patient {
   @Column({ unique: true })
   email: string;
 
+  @Column({ unique: true })
+  password: string;
+
   @Column()
   address: string;
 

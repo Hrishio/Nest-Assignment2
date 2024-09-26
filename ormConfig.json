@@ -4,7 +4,7 @@
   "port": 5432,
   "username": "postgres",
   "password": "hrishio",
-  "database": "nestDemo",
+  "database": "newSchema",
   "entities": ["src/**/*.entity.ts"],
   "migrations": ["src/migrations/*{.ts, .js}"],
   

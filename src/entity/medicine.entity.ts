@@ -16,6 +16,9 @@ export class Medicines {
   medName: string;
 
   @Column()
+  dosage: string;
+
+  @Column()
   reason: string;
 
   @Column()

@@ -1,15 +1,16 @@
-import { Module } from '@nestjs/common';
+import {  Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// import { UsersService } from './users.service';
-// import { UsersController } from './users.controller';
 import { Patient } from '../../entity/patient.entity';
 import { PatientsController } from './patient.controller';
-import { PatientService } from './patient.services';
-import { TransactionService } from '@src/transactions/transaction.service';
+import { PatientService } from './patient.services';// Correct import for AuthModule
+import { Repository } from 'typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Patient])],
+  imports: [
+    TypeOrmModule.forFeature([Patient]),
+  ],
   controllers: [PatientsController],
-  providers: [PatientService, TransactionService],
+  providers: [PatientService, Repository<Patient>],
+  exports:[PatientService],
 })
 export class PatientModule {}

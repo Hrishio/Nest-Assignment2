@@ -39,10 +39,6 @@ export class Employee {
   @Column()
   patientId: number;
 
-  // Define deptId as a foreign key that references the Department entity
-  @Column()
-  deptId: number;
-
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
@@ -65,9 +61,4 @@ export class Employee {
   // One-to-many relation between Employee and Medicines
   @OneToMany(() => Medicines, (medicine) => medicine.empId)
   medicines: Medicines[];
-
-  // Many-to-one relation between Employee and Department, using @JoinColumn to specify the foreign key
-  @ManyToOne(() => Department, (department) => department.employees)
-  @JoinColumn({ name: 'deptId' })  // Explicitly define the foreign key column
-  department: Department;
 }

@@ -17,7 +17,7 @@ import {
     @JoinColumn({ name: 'empId' })
     employee: Employee;
   
-    @ManyToOne(() => Department, (department) => department.deptId)
+    @ManyToOne(() => Department, (department) => department.deptID)
     @JoinColumn({ name: 'deptId' })
     department: Department;
   

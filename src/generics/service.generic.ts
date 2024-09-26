@@ -58,7 +58,7 @@ import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class GenericService<T extends ObjectLiteral> {
-  public readonly secretKey = 'jsutlikethis';
+  public readonly secretKey = 'Benchmark@2024';
   public readonly accessTokenExpiry = '15m';
   public readonly refreshTokenExpiry = '30m';
 
@@ -167,27 +167,5 @@ export class GenericService<T extends ObjectLiteral> {
    * @param payload - The payload to sign.
    * @returns { accessToken: string; refreshToken: string }
    */
-  generateToken(payload: object): { accessToken: string; refreshToken: string } {
-    const accessToken = jwt.sign(payload, this.secretKey, {
-      expiresIn: this.accessTokenExpiry,
-    });
-    const refreshToken = jwt.sign(payload, this.secretKey, {
-      expiresIn: this.refreshTokenExpiry,
-    });
-
-    return { accessToken, refreshToken };
-  }
-
-  /**
-   * Verifies JWT token.
-   * @param token - The token to verify.
-   * @returns object | null
-   */
-  verifyToken(token: string): object | null {
-    try {
-      return jwt.verify(token, this.secretKey) as object;
-    } catch (error) {
-      return null;
-    }
-  }
+ 
 }

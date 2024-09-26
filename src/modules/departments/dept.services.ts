@@ -23,7 +23,7 @@ export class DeptService extends GenericService<Department> {
 
   // Find one patient by ID
   findOne(id: number): Promise<Department | null> {
-    return this.repository.findOneBy({ deptId: id });
+    return this.repository.findOneBy({ deptID: id });
   }
 
   async findByEmpId(empId: number): Promise<Department[]> {
@@ -52,7 +52,7 @@ async update(
   // deptData: DeepPartial<Department>,
   deptData: UpdateDeptDto,
 ): Promise<Department> {
-  const dept = await this.repository.preload({ deptId: id, ...deptData });
+  const dept = await this.repository.preload({ deptID: id, ...deptData });
 
   if (!dept) {
     throw new Error(`Entity with id ${id} not found`);

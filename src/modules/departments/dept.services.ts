@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Department } from 'src/entity/dept.entity';
 import { GenericService } from 'src/generics/service.generic';
 import * as jwt from 'jsonwebtoken';
-import { Employee } from '@src/entity/employee.entity';
 import { CreateDeptDto, UpdateDeptDto } from '@src/dtos/dept.dto';
 
 @Injectable()

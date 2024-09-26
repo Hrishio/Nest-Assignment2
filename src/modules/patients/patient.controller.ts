@@ -8,22 +8,14 @@ import {
   Delete,
   Query,
   UseGuards,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { PatientService } from './patient.services';
 import { CreatePatientDto, updatePatientDto } from '../../dtos/patient.dto';
-import { Patient } from '@src/entity/patient.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('patients')
 export class PatientsController {
   constructor(private readonly patientService: PatientService) {}
-
-  @Get('search')
-  getProtectedResource() {
-    return { message: 'This is a protected resource!' };
-  }
 
   @Get("/")
   @UseGuards(JwtAuthGuard) // Default route
@@ -34,6 +26,7 @@ export class PatientsController {
     const result = await this.patientService.getAllPatients(page, limit);
     return result; // This should contain both data and total
   }
+
 
   @Get('/:id')
   findOne(@Param('id') id: number) {

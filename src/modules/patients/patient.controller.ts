@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   UseGuards,
+  HttpCode,
 } from '@nestjs/common';
 import { PatientService } from './patient.services';
 import { CreatePatientDto, updatePatientDto } from '../../dtos/patient.dto';
@@ -18,7 +19,8 @@ export class PatientsController {
   constructor(private readonly patientService: PatientService) {}
 
   @Get("/")
-  @UseGuards(JwtAuthGuard) // Default route
+  @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
   async getAllPatients(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10
@@ -29,21 +31,26 @@ export class PatientsController {
 
 
   @Get('/:id')
+  @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: number) {
     return this.patientService.findOne(id);
   }
 
   @Get('employee/:id')
+  @HttpCode(200)
   async findByEmployeeId(@Param('id') empId: number) {
     return await this.patientService.getEmpById(empId);
   }
 
   @Get('app/:id')
+  @HttpCode(200)
   async findAppById(@Param('id') appId: number) {
     return await this.patientService.getAppById(appId);
   }
 
   @Post('/new')
+  @HttpCode(201)
   async create(@Body() createPatientDto: CreatePatientDto) {
     try {
       const newPatient = await this.patientService.create(createPatientDto);
@@ -54,6 +61,7 @@ export class PatientsController {
   }
 
   @Put('/:id')
+  @HttpCode(201)
   async update(@Param('id') id: number, @Body() updatePatientDto: updatePatientDto) {
     try {
       return await this.patientService.update(id, updatePatientDto);
@@ -63,6 +71,7 @@ export class PatientsController {
   }
 
   @Delete('/:id')
+  @HttpCode(200)
   async remove(@Param('id') id: number) {
     try {
       return await this.patientService.remove(id);
@@ -70,25 +79,4 @@ export class PatientsController {
       throw error; // Handle error as needed
     }
   }
-
-  // New login route
-  // @Post('login')
-  // async login(@Body() patientLoginD) {
-  //   const { email, dob } = patientLoginDto;
-
-  //   // Find patient by email and DOB
-  //   const patient = await this.patientService.findByEmailAndDob(email, dob);
-
-  //   if (!patient) {
-  //     throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
-  //   }
-
-  //   // Generate a JWT token
-  //   const token = this.patientService.generateToken({ email: patient.email, patientId: patient.patientId });
-
-  //   return {
-  //     accessToken: token,
-  //     message: 'Login successful',
-  //   };
-  // }
 }

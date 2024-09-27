@@ -154,6 +154,9 @@ export class PatientService extends GenericService<Patient> {
 
   async validateUser(email: string, password: string): Promise<any> {
     try {
+      if(!email&&!password){
+        throw UnauthorizedException
+      }
         // Fetch the user entity based on email and password
         const entity = await this.findOneByEmailAndDob(email, password);
         

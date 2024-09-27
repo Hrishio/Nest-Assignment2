@@ -26,7 +26,7 @@ export class PatientsController {
     @Query('limit') limit: number = 10
   ): Promise<any> {
     const result = await this.patientService.getAllPatients(page, limit);
-    return result; // This should contain both data and total
+    return result; 
   }
 
 
@@ -56,7 +56,7 @@ export class PatientsController {
       const newPatient = await this.patientService.create(createPatientDto);
       return newPatient;
     } catch (error) {
-      throw error; // Handle error as needed
+      throw error; 
     }
   }
 
@@ -66,7 +66,7 @@ export class PatientsController {
     try {
       return await this.patientService.update(id, updatePatientDto);
     } catch (error) {
-      throw error; // Handle error as needed
+      throw error; 
     }
   }
 
@@ -76,7 +76,7 @@ export class PatientsController {
     try {
       return await this.patientService.remove(id);
     } catch (error) {
-      throw error; // Handle error as needed
+      throw error; 
     }
   }
 }

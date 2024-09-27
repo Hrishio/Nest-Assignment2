@@ -33,9 +33,6 @@ export class EmpService extends GenericService<Employee> {
     await this.repository.delete(id);
   }
 
-  // Create a new patient
-  // Example for AppService
-
 // async create(empData: DeepPartial<Employee>): Promise<Employee> {
 async create(empData: CreateEmpDto): Promise<Employee> {
   const newEmp = this.repository.create(empData);

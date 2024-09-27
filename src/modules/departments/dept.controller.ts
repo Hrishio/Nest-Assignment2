@@ -50,24 +50,5 @@ import { CreateDeptDto, UpdateDeptDto } from 'src/dtos/dept.dto';
     remove(@Param('id') id: number) {
       return this.deptService.remove(id);
     }
-  
-    // @Post('/login')
-    // async login(@Body() loginDto: { username: string; password: string }) {
-    //   // Implement your login logic
-    //   const user = await this.AuthService.validateUser(loginDto.username, loginDto.password);
-    //   if (user) {
-    //     const tokens = this.PatientService.generateToken({ userId: user.id });
-    //     return tokens;
-    //   } else {
-    //     throw new UnauthorizedException('Invalid credentials');
-    //   }
-    // }
-  
-    // @Post('/refresh-token')
-    // async refreshToken(@Body() body: { refreshToken: string }) {
-    //   // Implement refresh token logic
-    //   const newTokens = await this.PatientService.refreshToken(body.refreshToken);
-    //   return newTokens;
-    // }
   }
   

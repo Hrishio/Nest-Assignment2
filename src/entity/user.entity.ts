@@ -2,7 +2,7 @@
 
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('users') // Adjust the table name according to your database
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -11,7 +11,6 @@ export class User {
   email: string;
 
   @Column()
-  password: string; // Ensure you're storing hashed passwords!
+  password: string; 
 
-  // Add other relevant fields here
 }

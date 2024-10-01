@@ -42,7 +42,6 @@ export class AppService extends GenericService<Appointments> {
   // async create(appData: DeepPartial<Appointments>): Promise<Appointments> {
   async create(appData: CreateAppDto): Promise<Appointments> {
     const newApp = this.repository.create(appData);
-    console.log("appData", newApp)
 
     try {
       

@@ -5,16 +5,19 @@ import {
     Param,
     Post,
     Put,
-    Delete
+    Delete,
+    UseGuards
   } from '@nestjs/common';
 import { AppService } from './app.services';
 import { CreateAppDto, UpdateAppDto } from 'src/dtos/app.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
   
   @Controller('appointments')
   export class AppController {
     constructor(private readonly appService: AppService) {}
   
     @Get()
+    @UseGuards(JwtAuthGuard)
     findAll() {
       return this.appService.findAll();
     }

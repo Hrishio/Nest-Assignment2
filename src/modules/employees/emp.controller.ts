@@ -6,15 +6,18 @@ import {
   Post,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { EmpService } from './emp.services';
 import { CreateEmpDto, UpdateEmpDto } from 'src/dtos/emp.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('employees')
 export class EmpController {
   constructor(private readonly empService: EmpService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.empService.findAll();
   }

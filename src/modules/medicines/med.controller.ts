@@ -5,16 +5,19 @@ import {
     Param,
     Post,
     Put,
-    Delete
+    Delete,
+    UseGuards
   } from '@nestjs/common';
   import { MedService } from './med.services';
 import { CreateMedDto, UpdateMedDto } from 'src/dtos/med.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
   
   @Controller('medicines')
   export class MedController {
     constructor(private readonly medService: MedService) {}
   
     @Get()
+    @UseGuards(JwtAuthGuard)
     findAll() {
       return this.medService.findAll();
     }
